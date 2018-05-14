@@ -91,20 +91,15 @@ def test(request):
     print uname
     Markets = Market()
     CardPiles = CardPile()
-    p1 = Player(Markets, CardPiles, "p1")
-    p2 = Player(Markets, CardPiles, "p2")
-    p3 = Player(Markets, CardPiles, "p3")
-    p1.name = "p1"
-    p2.name = "p2"
-    p3.name = "p3"
-    Players['p1'] = p1
-    Players['p2'] = p2
-    Players['p3'] = p3
-    Players['zhangbowen'] = Player(Markets, CardPiles, "zhangbowen")
+    Players["lizhe"] = Player(Markets, CardPiles, "lizhe", u"哲哥")
+    Players["zhangpengcheng"] = Player(Markets, CardPiles, "zhangpengcheng", u"程哥")
+    Players["shanliang"] = Player(Markets, CardPiles, "shanliang", u"良哥")
+    Players['zhangbowen'] = Player(Markets, CardPiles, "zhangbowen", u"文哥")
     CardPiles.init()
-    p1.wupin_card[CardPiles.wupin_card["1"].id] = CardPiles.wupin_card["1"]
-    p2.wupin_card["2"] = CardPiles.wupin_card["2"]
-    p2.wupin_card["1"] = CardPiles.wupin_card["1"]
+    Players["lizhe"].wupin_card[CardPiles.wupin_card["1"].id] = CardPiles.wupin_card["1"]
+    Players["zhangpengcheng"].wupin_card["2"] = CardPiles.wupin_card["2"]
+    print("lizhe has ", Players["lizhe"].wupin_card)
+    # Players["shanliang"].wupin_card["1"] = CardPiles.wupin_card["1"]
     return render(request, 'index.html', {"username": uname, "players": Players, "cardpiles": CardPiles, "markets": Markets})
 
 def get_wupin_card_pile(request):
@@ -151,4 +146,57 @@ def get_card_from_consider(request):
     return render(request, 'index.html', {"username": uname, "players": Players, "cardpiles": CardPiles, "markets": Markets})
 
 
+def use_card(request):
+    global Players
+    global CardPiles
+    global Markets
+    user = request.GET.get("user")
+    card_id = request.GET.get("card")
+    uname = user
+    print("uname=", uname)
+    Players[user].use(card_id)
+    print(CardPiles)
+    return render(request, 'index.html', {"username": uname, "players": Players, "cardpiles": CardPiles, "markets": Markets})
 
+
+def drop_card(request):
+    global Players
+    global CardPiles
+    global Markets
+    user = request.GET.get("user")
+    player = request.GET.get("player")
+    card_id = request.GET.get("card")
+    uname = user
+    print("uname=", uname)
+    print("players have", Players.keys())
+    print("lizhe has ", Players["lizhe"].wupin_card)
+    print("zhangpengcheng has ", Players["zhangpengcheng"].wupin_card)
+    Players[player].drop_to_none(card_id)
+    print(CardPiles)
+    return render(request, 'index.html', {"username": uname, "players": Players, "cardpiles": CardPiles, "markets": Markets})
+
+
+def drop_consider(request):
+    global Players
+    global CardPiles
+    global Markets
+    user = request.GET.get("user")
+    card_id = request.GET.get("card")
+    uname = user
+    print("uname=", uname)
+    Players[user].drop_to_market(card_id)
+    print(CardPiles)
+    return render(request, 'index.html', {"username": uname, "players": Players, "cardpiles": CardPiles, "markets": Markets})
+
+
+def buy(request):
+    global Players
+    global CardPiles
+    global Markets
+    user = request.GET.get("user")
+    card_id = request.GET.get("card")
+    uname = user
+    print("uname=", uname)
+    Players[user].get_card_from_market(card_id)
+    print(CardPiles)
+    return render(request, 'index.html', {"username": uname, "players": Players, "cardpiles": CardPiles, "markets": Markets})

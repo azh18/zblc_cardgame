@@ -4,7 +4,8 @@ from Card import Card
 
 
 class Player():
-    def __init__(self, market, cardpile, name):
+    def __init__(self, market, cardpile, name, nickname):
+        self.nickname = nickname
         self.name = name
         self.ziyuan = 0
         self.zise_ziyuan = 0
@@ -56,14 +57,16 @@ class Player():
         # 转成json输出给用户
 
     # 弃牌，扔到市场（只对consider区域的牌有效）
-    def drop_to_market(self, card_id, market):
+    def drop_to_market(self, card_id):
+        market = self.market
         self.wupin_card_consider.player = "market"
         market.wupin_card[card_id] = self.wupin_card_consider
         self.wupin_card_consider = None
 
     # 被弃牌，消失
     def drop_to_none(self, card_id):
-        self.wupin_card[card_id] = ""
+        print("self.wupin_card", self.wupin_card)
+        print("self.wupin_card[card_id]", self.wupin_card[card_id])
         self.score -= self.wupin_card[card_id].score
         self.wupin_card.pop(card_id)
 
@@ -92,6 +95,7 @@ class Player():
         self.zise_ziyuan -= card.zise_price
         self.wupin_card[card.id] = card
         self.score += card.score
+        self.market.wupin_card.pop(card_id)
 
 
     # 抽一张物品卡

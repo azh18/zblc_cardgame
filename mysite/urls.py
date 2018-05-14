@@ -18,13 +18,17 @@ from django.contrib import admin
 from card import views
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'hello/', views.say_hello),
-    url(r'index/', views.flush),
-    url(r'login/', views.login),
-    url(r'test/', views.test),
-    url(r'get_wupin_card_pile/', views.get_wupin_card_pile),
-    url(r'get_ziyuan_card_pile/', views.get_ziyuan_card_pile),
-    url(r'get_consider/', views.get_card_from_consider),
+    url(r'^admin/$', admin.site.urls),
+    url(r'hello/$', views.say_hello),
+    url(r'index/$', views.flush),
+    url(r'login/$', views.login),
+    url(r'test/$', views.test),
+    url(r'get_wupin_card_pile/$', views.get_wupin_card_pile),
+    url(r'get_ziyuan_card_pile/$', views.get_ziyuan_card_pile),
+    url(r'get_consider/$', views.get_card_from_consider),
+    url(r'use/$', views.use_card),
+    url(r'drop_consider/$', views.drop_consider),
+    url(r'buy/$', views.buy),
+    url(r'drop/$', views.drop_card),
 
 ]
