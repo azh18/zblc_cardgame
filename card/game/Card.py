@@ -29,6 +29,9 @@ class Card:
 CARD = {
     "1": Card(),
     "2": Card(),
+    "3": Card(),
+    "4": Card(),
+    "5": Card(),
 }
 
 CARD['1'].id = '1'
@@ -42,6 +45,24 @@ CARD['2'].desc = "ggg2"
 CARD['2'].price = 2
 CARD['2'].zise_price = 2
 CARD['2'].score = 2
+
+CARD['3'].id = '3'
+CARD['3'].desc = "ggg3"
+CARD['3'].price = 2
+CARD['3'].zise_price = 0
+CARD['3'].score = 2
+
+CARD['4'].id = '4'
+CARD['4'].desc = "ggg4"
+CARD['4'].price = 2
+CARD['4'].zise_price = 0
+CARD['4'].score = 2
+
+CARD['5'].id = '5'
+CARD['5'].desc = "ggg5"
+CARD['5'].price = 2
+CARD['5'].zise_price = 0
+CARD['5'].score = 2
 
 
 class CardPile:

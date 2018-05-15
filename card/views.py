@@ -15,6 +15,7 @@ from django import template
 Players = {}
 CardPiles = None
 Markets = None
+GameEnd = False
 
 
 register = template.Library()
@@ -87,6 +88,7 @@ def test(request):
     global Players
     global CardPiles
     global Markets
+    global GameEnd
     uname = request.GET.get("user")
     print uname
     Markets = Market()
@@ -96,8 +98,9 @@ def test(request):
     Players["shanliang"] = Player(Markets, CardPiles, "shanliang", u"良哥")
     Players['zhangbowen'] = Player(Markets, CardPiles, "zhangbowen", u"文哥")
     CardPiles.init()
-    Players["lizhe"].wupin_card[CardPiles.wupin_card["1"].id] = CardPiles.wupin_card["1"]
-    Players["zhangpengcheng"].wupin_card["2"] = CardPiles.wupin_card["2"]
+    GameEnd = False
+    # Players["lizhe"].wupin_card[CardPiles.wupin_card["1"].id] = CardPiles.wupin_card["1"]
+    # Players["zhangpengcheng"].wupin_card["2"] = CardPiles.wupin_card["2"]
     print("lizhe has ", Players["lizhe"].wupin_card)
     # Players["shanliang"].wupin_card["1"] = CardPiles.wupin_card["1"]
     return render(request, 'index.html', {"username": uname, "players": Players, "cardpiles": CardPiles, "markets": Markets})
@@ -109,9 +112,12 @@ def get_wupin_card_pile(request):
     user = request.GET.get("user")
     uname = user
     print("uname=", uname)
-    Players[user].get_a_wupin_card()
+    warning = Players[user].get_a_wupin_card()
+    if warning is None:
+        warning = ""
     print(CardPiles)
-    return render(request, 'index.html', {"username": uname, "players": Players, "cardpiles": CardPiles, "markets": Markets})
+    return render(request, 'index.html', {"username": uname, "players": Players,
+                                          "cardpiles": CardPiles, "markets": Markets, "warning": warning})
 
 def get_ziyuan_card_pile(request):
     global Players
@@ -120,17 +126,24 @@ def get_ziyuan_card_pile(request):
     user = request.GET.get("user")
     uname = user
     print("uname=", uname)
-    Players[user].get_a_ziyuan_card()
-    return render(request, 'index.html', {"username": uname, "players": Players, "cardpiles": CardPiles, "markets": Markets})
+    warning = Players[user].get_a_ziyuan_card()
+    if warning is None:
+        warning = ""
+    return render(request, 'index.html', {"username": uname, "players": Players,
+                                          "cardpiles": CardPiles, "markets": Markets, "warning": warning})
 
 
 def flush(request):
     global Players
     global CardPiles
     global Markets
+    global GameEnd
+    print GameEnd
     user = request.GET.get("user")
     uname = user
-    return render(request, 'index.html', {"username": uname, "players": Players, "cardpiles": CardPiles, "markets": Markets})
+    return render(request, 'index.html', {"username": uname, "players": Players,
+                                          "cardpiles": CardPiles, "markets": Markets,
+                                          "gameend": GameEnd})
 
 
 def get_card_from_consider(request):
@@ -141,22 +154,32 @@ def get_card_from_consider(request):
     card_id = request.GET.get("card")
     uname = user
     print("uname=", uname)
-    Players[user].get_card_from_consider(card_id)
+    warning = Players[user].get_card_from_consider(card_id)
+    if warning is None:
+        warning = ""
     print(CardPiles)
-    return render(request, 'index.html', {"username": uname, "players": Players, "cardpiles": CardPiles, "markets": Markets})
+    return render(request, 'index.html', {"username": uname, "players": Players,
+                                          "cardpiles": CardPiles, "markets": Markets, "warning":warning})
 
 
 def use_card(request):
     global Players
     global CardPiles
     global Markets
+    global GameEnd
     user = request.GET.get("user")
     card_id = request.GET.get("card")
     uname = user
     print("uname=", uname)
     Players[user].use(card_id)
+    if Players[user].is_win():
+        GameEnd = True
+    else:
+        GameEnd = False
     print(CardPiles)
-    return render(request, 'index.html', {"username": uname, "players": Players, "cardpiles": CardPiles, "markets": Markets})
+    return render(request, 'index.html', {"username": uname, "players": Players,
+                                          "cardpiles": CardPiles, "markets": Markets,
+                                          "gameend": GameEnd})
 
 
 def drop_card(request):
@@ -197,6 +220,9 @@ def buy(request):
     card_id = request.GET.get("card")
     uname = user
     print("uname=", uname)
-    Players[user].get_card_from_market(card_id)
+    warning = Players[user].get_card_from_market(card_id)
+    if warning is None:
+        warning = ""
     print(CardPiles)
-    return render(request, 'index.html', {"username": uname, "players": Players, "cardpiles": CardPiles, "markets": Markets})
+    return render(request, 'index.html', {"username": uname, "players": Players,
+                                          "cardpiles": CardPiles, "markets": Markets, "warning": warning})

@@ -6,6 +6,10 @@
 <body>
 {{hello.body}}
 <meta http-equiv="refresh" content="2;url=/index/?user={{username}}">
+<h1><font color="red" > {{warning}} </font></h1>
+{% if gameend %}
+<h1><font color="red" > 游戏结束 </font></h1>
+{% endif %}
 {% for playername, u in players.items %}
 {% if playername == username %}
 <table border="1">
@@ -15,6 +19,12 @@
         <th colspan="2"> 分：{{u.score}}</th>
         <th colspan="2"> 资源：{{u.ziyuan}}</th>
         <th colspan="2"> 紫色资源：{{u.zise_ziyuan}}</th>
+        <th>
+            <a href="/get_wupin_card_pile/?user={{username}}">抽物品卡</a>
+        </th>
+        <th>
+            <a href="/get_ziyuan_card_pile/?user={{username}}">抽资源卡</a>
+        </th>
     </tr>
     <tr>
         <th colspan="1" bgcolor="#E6E6FA"> 思考区：</th>
@@ -66,20 +76,25 @@
     {% if u.name != username %}
     <tr>
         <th colspan="5">{{u.nickname}}</th>
+        {% if not gameend %}
         <th colspan="2"> 分：xxxxxxxxx</th>
         <th colspan="2"> 资源：xxxxxxxxx</th>
         <th colspan="2"> 紫色资源：xxxxxxxxx</th>
-        <!--<th colspan="2"> 分：{{u.score}}</th>-->
-        <!--<th colspan="2"> 资源：{{u.ziyuan}}</th>-->
-        <!--<th colspan="2"> 紫色资源：{{u.zise_ziyuan}}</th>-->
+        {% else %}
+        <th colspan="2"> 分：{{u.score}}</th>
+        <th colspan="2"> 资源：{{u.ziyuan}}</th>
+        <th colspan="2"> 紫色资源：{{u.zise_ziyuan}}</th>
+        {% endif %}
     </tr>
     <tr>
         <th colspan="1" bgcolor="#E6E6FA"> 思考区：</th>
         <th colspan="1" bgcolor="#E6E6FA">
             {% if u.wupin_card_consider != none %}
             <div title="name"> {{u.wupin_card_consider.name}} </div>
-            <!--<div title="price"> 价格：{{u.wupin_card_consider.price}}资源 + {{u.wupin_card_consider.zise_price}}紫色资源</div>-->
-            <!--<div title="desc"> 简介：{{u.wupin_card_consider.desc}} </div>-->
+            {% if gameend %}
+            <div title="price"> 价格：{{u.wupin_card_consider.price}}资源 + {{u.wupin_card_consider.zise_price}}紫色资源</div>
+            <div title="desc"> 简介：{{u.wupin_card_consider.desc}} </div>
+            {% endif %}
             <div title="drop"> <a href="/drop_consider/?user={{u.name}}&card={{u.wupin_card_consider.id}}">弃牌</a></div>
             <div title="get"> <a href="/get_consider/?user={{u.name}}&card={{u.wupin_card_consider.id}}">拿走</a> </div>
             {% endif %}
@@ -90,9 +105,11 @@
         <th colspan="1" bgcolor="#A9A9A9">
             {% if c.is_hengzhi %}
             <div title="name"> {{c.name}} </div>
-            <!--<div title="price"> 价格：{{c.price}}资源 + {{c.zise_price}}紫色资源</div>-->
-            <!--<div title="desc"> 简介：{{c.desc}} </div>-->
-            <!--<div title="drop"> <a href="/drop/?user={{u.name}}&card={{c.id}}">弃牌</a></div>-->
+            {% if gameend %}
+            <div title="price"> 价格：{{c.price}}资源 + {{c.zise_price}}紫色资源</div>
+            <div title="desc"> 简介：{{c.desc}} </div>
+            <div title="drop"> <a href="/drop/?user={{u.name}}&card={{c.id}}">弃牌</a></div>
+            {% endif %}
             {% endif %}
         </th>
         {% endfor %}
@@ -105,8 +122,10 @@
         <th bgcolor="#ADFF2F">
             {% if not c.is_hengzhi %}
             <div title="name"> {{c.name}} </div>
-            <!--<div title="price"> 价格：{{c.price}}资源 + {{c.zise_price}}紫色资源</div>-->
-            <!--<div title="desc"> 简介：{{c.desc}} </div>-->
+            {% if gameend %}
+            <div title="price"> 价格：{{c.price}}资源 + {{c.zise_price}}紫色资源</div>
+            <div title="desc"> 简介：{{c.desc}} </div>
+            {% endif %}
             <div title="drop"> <a href="/drop/?player={{u.name}}&user={{username}}&card={{c.id}}">弃牌</a></div>
             <!--<div title="use"> <a href="/use/?user={{u.name}}&card={{c.id}}">使用</a></div>-->
             {% endif %}
@@ -143,12 +162,12 @@
 <!--<br><br><br>-->
 <div>
     <font>牌库：还有{{cardpiles.get_wupin_count}}张物品卡和{{cardpiles.get_total_ziyuan_count}}张资源卡</font>
-    <div>
-        <a href="/get_wupin_card_pile/?user={{username}}">抽物品卡</a>
-    </div>
-    <div>
-        <a href="/get_ziyuan_card_pile/?user={{username}}">抽资源卡</a>
-    </div>
+    <!--<div>-->
+        <!--<a href="/get_wupin_card_pile/?user={{username}}">抽物品卡</a>-->
+    <!--</div>-->
+    <!--<div>-->
+        <!--<a href="/get_ziyuan_card_pile/?user={{username}}">抽资源卡</a>-->
+    <!--</div>-->
 </div>
 
 </body>

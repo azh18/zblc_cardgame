@@ -18,6 +18,18 @@ class Player():
         self.effect = [] # 影响效果，在各个阶段要考虑
         self.wupin_card_consider = None # 抽到的物品卡，等待是否拿走的决定
 
+    def is_win(self):
+        hengzhi_count = 0
+        for k, card in self.wupin_card.iteritems():
+            if card.is_hengzhi:
+                hengzhi_count += 1
+        if hengzhi_count >= 5:
+            self.win = True
+            return True
+        return False
+
+
+
     def run(self):
         # 摸牌，一张资源，一张物品（没卡怎么办？）
         # 资源卡必摸，如果摸物品，则不能买市场，否则可以买市场
@@ -81,37 +93,48 @@ class Player():
         if card.id != card_id:
             print "error in get card from consider"
         card.player = self.name
+        if self.ziyuan < card.price or self.zise_ziyuan < card.zise_price:
+            return u"你的资源不够了"
         self.ziyuan -= card.price
         self.zise_ziyuan -= card.zise_price
         self.wupin_card[card.id] = card
         self.score += card.score
         self.wupin_card_consider = None
+        return None
 
     # 从市场拿卡
     def get_card_from_market(self, card_id):
         card = self.market.wupin_card[card_id]
         card.player = self.name
+        if self.ziyuan < card.price or self.zise_ziyuan < card.zise_price:
+            return u"你的资源不够了"
         self.ziyuan -= card.price
         self.zise_ziyuan -= card.zise_price
         self.wupin_card[card.id] = card
         self.score += card.score
         self.market.wupin_card.pop(card_id)
+        return None
 
 
     # 抽一张物品卡
     def get_a_wupin_card(self):
         cardpile = self.card_pile
+        if len(cardpile.wupin_card.keys()) == 0:
+            return u"牌堆里没有物品卡了"
         key_chosen = random.choice(cardpile.wupin_card.keys())
         card = cardpile.wupin_card[key_chosen]
         cardpile.wupin_card.pop(key_chosen)
         card.player = "consider"
         self.wupin_card_consider = card
+        return None
 
 
     # 抽一张资源卡
     def get_a_ziyuan_card(self):
         cardpile = self.card_pile
         ziyuan_total_num = len(cardpile.zise_ziyuan) + len(cardpile.ziyuan)
+        if ziyuan_total_num == 0:
+            return u"没有资源卡了"
         idx = random.randint(0, ziyuan_total_num - 1)
         if idx <= len(cardpile.ziyuan) - 1:
             # 抽到普通资源
@@ -120,4 +143,5 @@ class Player():
         else:
             self.zise_ziyuan += cardpile.zise_ziyuan[idx - len(cardpile.ziyuan)]
             cardpile.zise_ziyuan.pop(idx - len(cardpile.ziyuan))
+        return None
 
