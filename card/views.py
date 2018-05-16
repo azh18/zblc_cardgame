@@ -55,7 +55,7 @@ def login(request):
 
             user = User.objects.filter(username__exact=username, password__exact=password)
             if user:
-                return HttpResponseRedirect("/test/?user={}".format(username))
+                return HttpResponseRedirect("/index/?user={}".format(username))
             else:
                 return HttpResponse('用户名或密码错误,请重新登录')
     else:
