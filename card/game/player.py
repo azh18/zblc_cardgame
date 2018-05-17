@@ -145,3 +145,11 @@ class Player():
             cardpile.zise_ziyuan.pop(idx - len(cardpile.ziyuan))
         return None
 
+    def add_score(self, score):
+        self.score += score
+        return
+
+    def sub_score(self, score):
+        self.score -= score
+        return
+

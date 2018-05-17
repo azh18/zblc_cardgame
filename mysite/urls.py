@@ -30,5 +30,7 @@ urlpatterns = [
     url(r'drop_consider/$', views.drop_consider),
     url(r'buy/$', views.buy),
     url(r'drop/$', views.drop_card),
+    url(r'add_score/$', views.add_score),
+    url(r'sub_score/$', views.sub_score),
 
 ]

@@ -3,15 +3,17 @@
 from main import flush
 import random
 import copy
+import csv
+
 
 def effect_card(current_player, other_players, card_pile):
     pass
 
 
-
 class Card:
     def __init__(self):
         self.id = '0'
+        self.name = ""
         self.effect = 0
         self.score = 0
         self.price = 0
@@ -89,6 +91,33 @@ class CardPile:
 
     # 初始化卡堆
     def init(self):
-        self.wupin_card = copy.deepcopy(CARD)
-        self.ziyuan = [1,3,5,1,3,5,1,3,5]
-        self.zise_ziyuan = [10, 10, 10, 10]
+        self.wupin_card = copy.deepcopy(self.read_from_csv())
+        self.ziyuan = [1] * 60 + [5] * 30
+        self.zise_ziyuan = [10] * 10
+
+    def read_from_csv(self):
+        count = 1
+        card_map = {}
+        try:
+            with open("game_info.csv") as f:
+                reader = csv.reader(f)
+                for row in reader:
+                    card_new = Card()
+                    card_new.price = int(row[0].replace('\xef\xbb\xbf', ''))
+                    card_new.zise_price = int(row[1].replace('\xef\xbb\xbf', ''))
+                    card_new.score = int(row[2].replace('\xef\xbb\xbf', ''))
+                    card_new.desc = row[3].replace('\xef\xbb\xbf', '')
+                    card_map[str(count)] = card_new
+                    count += 1
+                    card_new = Card()
+                    card_new.price = int(row[0].replace('\xef\xbb\xbf', ''))
+                    card_new.zise_price = int(row[1].replace('\xef\xbb\xbf', ''))
+                    card_new.score = int(row[2].replace('\xef\xbb\xbf', ''))
+                    card_new.desc = row[3].replace('\xef\xbb\xbf', '')
+                    card_map[str(count)] = card_new
+                    count += 1
+        except Exception, e:
+            print(e.message)
+        return card_map
+
+

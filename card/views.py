@@ -209,7 +209,36 @@ def drop_consider(request):
     print("uname=", uname)
     Players[user].drop_to_market(card_id)
     print(CardPiles)
-    return render(request, 'index.html', {"username": uname, "players": Players, "cardpiles": CardPiles, "markets": Markets})
+    return render(request, 'index.html', {"username": uname, "players": Players,
+                                          "cardpiles": CardPiles, "markets": Markets})
+
+
+def add_score(request):
+    global Players
+    global CardPiles
+    global Markets
+    user = request.GET.get("user")
+    score = int(request.GET.get("score"))
+    uname = user
+    print("uname=", uname)
+    Players[user].add_score(score)
+    print(CardPiles)
+    return render(request, 'index.html', {"username": uname, "players": Players,
+                                          "cardpiles": CardPiles, "markets": Markets})
+
+
+def sub_score(request):
+    global Players
+    global CardPiles
+    global Markets
+    user = request.GET.get("user")
+    score = int(request.GET.get("score"))
+    uname = user
+    print("uname=", uname)
+    Players[user].sub_score(score)
+    print(CardPiles)
+    return render(request, 'index.html', {"username": uname, "players": Players,
+                                          "cardpiles": CardPiles, "markets": Markets})
 
 
 def buy(request):

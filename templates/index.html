@@ -25,6 +25,20 @@
         <th>
             <a href="/get_ziyuan_card_pile/?user={{username}}">抽资源卡</a>
         </th>
+        <th>
+            <form action="/add_score/">
+                <input type="text" name="user" value="{{username}}"/>
+                <br>
+                <input type="text" name="score" value=""/>
+                <input type="submit" value="加分"/>
+            </form>
+            <form action="/sub_score/">
+                <input type="text" name="user" value="{{username}}" style="display:none"/>
+                <br>
+                <input type="text" name="score" value=""/>
+                <input type="submit" value="减分"/>
+            </form>
+        </th>
     </tr>
     <tr>
         <th colspan="1" bgcolor="#E6E6FA"> 思考区：</th>
