@@ -32,5 +32,5 @@ urlpatterns = [
     url(r'drop/$', views.drop_card),
     url(r'add_score/$', views.add_score),
     url(r'sub_score/$', views.sub_score),
-
+    url(r'^$', views.login),
 ]

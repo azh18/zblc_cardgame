@@ -46,6 +46,7 @@
             {% if u.wupin_card_consider != none %}
             <div title="name"> {{u.wupin_card_consider.name}} </div>
             <div title="price"> 价格：{{u.wupin_card_consider.price}}资源 + {{u.wupin_card_consider.zise_price}}紫色资源</div>
+            <div title="point"> 分：{{u.wupin_card_consider.score}} </div>
             <div title="desc"> 简介：{{u.wupin_card_consider.desc}} </div>
             <div title="drop"> <a href="/drop_consider/?user={{u.name}}&card={{u.wupin_card_consider.id}}">弃牌</a></div>
             <div title="get"> <a href="/get_consider/?user={{u.name}}&card={{u.wupin_card_consider.id}}">拿走</a> </div>
@@ -58,6 +59,7 @@
             {% if c.is_hengzhi %}
             <div title="name"> {{c.name}} </div>
             <div title="price"> 价格：{{c.price}}资源 + {{c.zise_price}}紫色资源</div>
+            <div title="point"> 分：{{c.score}} </div>
             <div title="desc"> 简介：{{c.desc}} </div>
             <!--<div title="drop"> <a href="/drop/?user={{u.name}}&card={{c.id}}">弃牌</a></div>-->
             {% endif %}
@@ -74,6 +76,7 @@
             <div title="name"> {{c.name}} </div>
             <div title="price"> 价格：{{c.price}}资源 + {{c.zise_price}}紫色资源</div>
             <div title="desc"> 简介：{{c.desc}} </div>
+            <div title="point"> 分：{{c.score}} </div>
             <div title="drop"> <a href="/drop/?player={{u.name}}&user={{username}}&card={{c.id}}">弃牌</a></div>
             <div title="use"> <a href="/use/?user={{u.name}}&card={{c.id}}">使用</a></div>
             {% endif %}
@@ -107,6 +110,7 @@
             <div title="name"> {{u.wupin_card_consider.name}} </div>
             {% if gameend %}
             <div title="price"> 价格：{{u.wupin_card_consider.price}}资源 + {{u.wupin_card_consider.zise_price}}紫色资源</div>
+            <div title="point"> 分：{{u.wupin_card_consider.score}} </div>
             <div title="desc"> 简介：{{u.wupin_card_consider.desc}} </div>
             {% endif %}
             <div title="drop"> <a href="/drop_consider/?user={{u.name}}&card={{u.wupin_card_consider.id}}">弃牌</a></div>
@@ -119,11 +123,10 @@
         <th colspan="1" bgcolor="#A9A9A9">
             {% if c.is_hengzhi %}
             <div title="name"> {{c.name}} </div>
-            {% if gameend %}
             <div title="price"> 价格：{{c.price}}资源 + {{c.zise_price}}紫色资源</div>
+            <div title="point"> 分：{{c.score}} </div>
             <div title="desc"> 简介：{{c.desc}} </div>
             <div title="drop"> <a href="/drop/?user={{u.name}}&card={{c.id}}">弃牌</a></div>
-            {% endif %}
             {% endif %}
         </th>
         {% endfor %}
@@ -138,6 +141,7 @@
             <div title="name"> {{c.name}} </div>
             {% if gameend %}
             <div title="price"> 价格：{{c.price}}资源 + {{c.zise_price}}紫色资源</div>
+            <div title="point"> 分：{{c.score}} </div>
             <div title="desc"> 简介：{{c.desc}} </div>
             {% endif %}
             <div title="drop"> <a href="/drop/?player={{u.name}}&user={{username}}&card={{c.id}}">弃牌</a></div>
