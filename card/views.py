@@ -97,8 +97,13 @@ def test(request):
     Players["zhangpengcheng"] = Player(Markets, CardPiles, "zhangpengcheng", u"程哥")
     Players["shanliang"] = Player(Markets, CardPiles, "shanliang", u"良哥")
     Players['zhangbowen'] = Player(Markets, CardPiles, "zhangbowen", u"文哥")
+    Players["lizhe"].init_ziyuan()
+    Players["zhangpengcheng"].init_ziyuan()
+    Players["shanliang"].init_ziyuan()
+    Players['zhangbowen'].init_ziyuan()
     CardPiles.init()
     GameEnd = False
+    print(str(CardPiles.wupin_card))
     # Players["lizhe"].wupin_card[CardPiles.wupin_card["1"].id] = CardPiles.wupin_card["1"]
     # Players["zhangpengcheng"].wupin_card["2"] = CardPiles.wupin_card["2"]
     print("lizhe has ", Players["lizhe"].wupin_card)

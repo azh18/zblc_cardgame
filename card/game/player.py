@@ -153,3 +153,8 @@ class Player():
         self.score -= score
         return
 
+    def init_ziyuan(self):
+        self.zise_ziyuan = 1
+        self.ziyuan += 8
+        return
+

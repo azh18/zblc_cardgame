@@ -93,7 +93,7 @@ class CardPile:
     def init(self):
         self.wupin_card = copy.deepcopy(self.read_from_csv())
         self.ziyuan = [1] * 60 + [5] * 30
-        self.zise_ziyuan = [10] * 10
+        self.zise_ziyuan = [1] * 10
 
     def read_from_csv(self):
         count = 1
@@ -107,6 +107,7 @@ class CardPile:
                     card_new.zise_price = int(row[1].replace('\xef\xbb\xbf', ''))
                     card_new.score = int(row[2].replace('\xef\xbb\xbf', ''))
                     card_new.desc = row[3].replace('\xef\xbb\xbf', '')
+                    card_new.id = str(count)
                     card_map[str(count)] = card_new
                     count += 1
                     card_new = Card()
@@ -114,6 +115,7 @@ class CardPile:
                     card_new.zise_price = int(row[1].replace('\xef\xbb\xbf', ''))
                     card_new.score = int(row[2].replace('\xef\xbb\xbf', ''))
                     card_new.desc = row[3].replace('\xef\xbb\xbf', '')
+                    card_new.id = str(count)
                     card_map[str(count)] = card_new
                     count += 1
         except Exception, e:

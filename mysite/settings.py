@@ -25,7 +25,7 @@ SECRET_KEY = '5dvd50v#(yyrwt1dwyiz-gz!att1ohw29x*@@e2yy2kb@b0oc1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
