@@ -10,6 +10,32 @@ def effect_card(current_player, other_players, card_pile):
     pass
 
 
+# 减资源，带找钱
+def reduce_ziyuan(price, player, cardpile):
+    need_reduced = price
+    have_5_ziyuan = False
+    if player.ziyuan["5"] > 0:
+        have_5_ziyuan = True
+    while need_reduced > 0:
+        if need_reduced > 5:
+            if have_5_ziyuan:
+                player.ziyuan["5"] -= 1
+                if player.ziyuan["5"] == 0:
+                    have_5_ziyuan = False
+                need_reduced -= 5
+            else:
+                if cardpile.ziyuan["1"] >= 5:
+                    player.ziyuan["1"] += 5
+                    cardpile.ziyuan["1"] -= 5
+                    cardpile.ziyuan["5"] += 1
+                else:
+                    raise Exception("error. no enough 1")
+        else:
+            player.ziyuan["1"] -= need_reduced
+            need_reduced = 0
+    return
+
+
 class Card:
     def __init__(self):
         self.id = '0'
@@ -70,7 +96,7 @@ CARD['5'].score = 2
 class CardPile:
     def __init__(self):
         self.wupin_card = {}
-        self.ziyuan = []
+        self.ziyuan = {}
         self.zise_ziyuan = []
 
     # 显示还有几张牌
@@ -81,7 +107,7 @@ class CardPile:
         return len(self.wupin_card)
 
     def get_ziyuan_count(self):
-        return len(self.ziyuan)
+        return self.ziyuan["1"] + self.ziyuan["5"]
 
     def get_zise_ziyuan_count(self):
         return len(self.zise_ziyuan)
@@ -92,7 +118,7 @@ class CardPile:
     # 初始化卡堆
     def init(self):
         self.wupin_card = copy.deepcopy(self.read_from_csv())
-        self.ziyuan = [1] * 60 + [5] * 30
+        self.ziyuan = {"1":60, "5":30}
         self.zise_ziyuan = [1] * 10
 
     def read_from_csv(self):

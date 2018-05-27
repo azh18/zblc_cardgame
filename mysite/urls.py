@@ -18,7 +18,7 @@ from django.contrib import admin
 from card import views
 
 urlpatterns = [
-    url(r'^admin/$', admin.site.urls),
+    url(r'^admin/', admin.site.urls),
     url(r'hello/$', views.say_hello),
     url(r'index/$', views.flush),
     url(r'login/$', views.login),
@@ -32,5 +32,11 @@ urlpatterns = [
     url(r'drop/$', views.drop_card),
     url(r'add_score/$', views.add_score),
     url(r'sub_score/$', views.sub_score),
+    url(r'change_ziyuan/$', views.change_ziyuan),
+    url(r'add_ziyuan/$', views.add_ziyuan),
+    url(r'del_ziyuan/$', views.del_ziyuan),
+    url(r'drop_ziyuan/$', views.drop_ziyuan),
+    url(r'stole_ziyuan/$', views.stole_ziyuan),
+    url(r'get_hand/$', views.get_hand),
     url(r'^$', views.login),
 ]

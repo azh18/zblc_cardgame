@@ -5,17 +5,17 @@
 </head>
 <body>
 {{hello.body}}
-<meta http-equiv="refresh" content="2;url=/index/?user={{username}}">
-<h1><font color="red" > {{warning}} </font></h1>
+<meta http-equiv="refresh" content="5;url=/index/?user={{username}}">
+<h1><font color="red"> {{warning}} </font></h1>
 {% if gameend %}
-<h1><font color="red" > 游戏结束 </font></h1>
+<h1><font color="red"> 游戏结束 </font></h1>
 {% endif %}
 {% for playername, u in players.items %}
 {% if playername == username %}
 <table border="1">
     <!--自己的卡片-->
     <tr>
-        <th colspan="5">{{u.nickname}}</th>
+        <th colspan="1">{{u.nickname}}</th>
         <th colspan="2"> 分：{{u.score}}</th>
         <th colspan="2"> 资源：{{u.ziyuan}}</th>
         <th colspan="2"> 紫色资源：{{u.zise_ziyuan}}</th>
@@ -27,43 +27,91 @@
         </th>
         <th>
             <form action="/add_score/">
-                <input type="text" name="user" value="{{username}}"/>
+                <input type="text" name="user" value="{{username}}" style="width:50px"/>
                 <br>
-                <input type="text" name="score" value=""/>
+                <input type="text" name="score" value="" style="width:30px"/>
                 <input type="submit" value="加分"/>
             </form>
             <form action="/sub_score/">
                 <input type="text" name="user" value="{{username}}" style="display:none"/>
-                <br>
-                <input type="text" name="score" value=""/>
+                <input type="text" name="score" value="" style="width:30px"/>
                 <input type="submit" value="减分"/>
             </form>
         </th>
+        <th>
+            <form action="/change_ziyuan/">
+                <input type="text" name="user" value="{{username}}" style="display:none"/>
+                1: <input type="text" name="one" value="" style="width:30px"/>
+                <br>
+                5: <input type="text" name="five" value="" style="width:30px"/>
+                <br>
+                紫色：<input type="text" name="zise" value="" style="width:30px"/>
+                <input type="submit" value="重置资源"/>
+            </form>
+        </th>
+        <th>
+            <form action="/add_ziyuan/">
+                <input type="text" name="user" value="{{username}}" style="display:none"/>
+                1: <input type="text" name="one" value="" style="width:30px"/>
+                <br>
+                5: <input type="text" name="five" value="" style="width:30px"/>
+                <br>
+                紫色：<input type="text" name="zise" value="" style="width:30px"/>
+                <input type="submit" value="增加资源"/>
+            </form>
+        </th>
+        <th>
+            <form action="/del_ziyuan/">
+                <input type="text" name="user" value="{{username}}" style="display:none"/>
+                1: <input type="text" name="one" value="" style="width:30px"/>
+                <br>
+                5: <input type="text" name="five" value="" style="width:30px"/>
+                <br>
+                紫色：<input type="text" name="zise" value="" style="width:30px"/>
+                <input type="submit" value="减少资源"/>
+            </form>
+        </th>
+        <th>
+            <a href="/drop_ziyuan/?user={{username}}&player={{u.name}}"> 随机弃一个资源 </a><br>
+            <a href="/stole_ziyuan/?user={{username}}&player={{u.name}}&isdrop="> 随机抽他一个资源拿走 </a><br>
+            <a href="/stole_ziyuan/?user={{username}}&player={{u.name}}&isdrop=True"> 随机抽他一个资源扔掉 </a>
+        </th>
     </tr>
+</table>
+<table border="1">
     <tr>
         <th colspan="1" bgcolor="#E6E6FA"> 思考区：</th>
-        <th colspan="1" bgcolor="#E6E6FA">
+        <th colspan="1" bgcolor="#E6E6FA" width="150px">
             {% if u.wupin_card_consider != none %}
-            <div title="name"> {{u.wupin_card_consider.name}} </div>
+            <div title="name"> {{u.wupin_card_consider.name}}</div>
             <div title="price"> 价格：{{u.wupin_card_consider.price}}资源 + {{u.wupin_card_consider.zise_price}}紫色资源</div>
-            <div title="point"> 分：{{u.wupin_card_consider.score}} </div>
-            <div title="desc"> 简介：{{u.wupin_card_consider.desc}} </div>
-            <div title="drop"> <a href="/drop_consider/?user={{u.name}}&card={{u.wupin_card_consider.id}}">弃牌</a></div>
-            <div title="get"> <a href="/get_consider/?user={{u.name}}&card={{u.wupin_card_consider.id}}">拿走</a> </div>
+            <div title="point"> 分：{{u.wupin_card_consider.score}}</div>
+            <div title="desc"> 简介：{{u.wupin_card_consider.desc}}</div>
+            <!--user 从 player 拿走 card-->
+            <div title="drop"><a
+                    href="/drop_consider/?user={{username}}&player={{u.name}}&card={{u.wupin_card_consider.id}}">弃牌到市场</a>
+            </div>
+            <div title="drop1"><a
+                    href="/drop_consider/?user={{username}}&player={{u.name}}&card={{u.wupin_card_consider.id}}&tonone=True">弃牌消失</a>
+            </div>
+            <div title="get"><a
+                    href="/get_consider/?user={{username}}&player={{u.name}}&card={{u.wupin_card_consider.id}}">拿走</a>
+            </div>
             {% endif %}
         </th>
         <th colspan="4"></th>
         <th colspan="1"> 横置区：</th>
         {% for ket, c in u.wupin_card.items %}
-        <th colspan="1" bgcolor="#A9A9A9">
-            {% if c.is_hengzhi %}
-            <div title="name"> {{c.name}} </div>
+        {% if c.is_hengzhi %}
+        <th colspan="1" bgcolor="#A9A9A9" width="150px">
+            <div title="name"> {{c.name}}</div>
             <div title="price"> 价格：{{c.price}}资源 + {{c.zise_price}}紫色资源</div>
-            <div title="point"> 分：{{c.score}} </div>
-            <div title="desc"> 简介：{{c.desc}} </div>
+            <div title="point"> 分：{{c.score}}</div>
+            <div title="desc"> 简介：{{c.desc}}</div>
             <!--<div title="drop"> <a href="/drop/?user={{u.name}}&card={{c.id}}">弃牌</a></div>-->
-            {% endif %}
         </th>
+        {% endif %}
+
         {% endfor %}
     </tr>
     <tr>
@@ -71,14 +119,15 @@
             <br>手牌区<br><br>
         </th>
         {% for key, c in u.wupin_card.items %}
-        <th bgcolor="#ADFF2F">
+        <th bgcolor="#ADFF2F" width="150px">
             {% if not c.is_hengzhi %}
-            <div title="name"> {{c.name}} </div>
+            <div title="name"> {{c.name}}</div>
             <div title="price"> 价格：{{c.price}}资源 + {{c.zise_price}}紫色资源</div>
-            <div title="desc"> 简介：{{c.desc}} </div>
-            <div title="point"> 分：{{c.score}} </div>
-            <div title="drop"> <a href="/drop/?player={{u.name}}&user={{username}}&card={{c.id}}">弃牌</a></div>
-            <div title="use"> <a href="/use/?user={{u.name}}&card={{c.id}}">使用</a></div>
+            <div title="desc"> 简介：{{c.desc}}</div>
+            <div title="point"> 分：{{c.score}}</div>
+            <!--user 从 player 拿走 card-->
+            <div title="drop"><a href="/drop/?player={{u.name}}&user={{username}}&card={{c.id}}">弃牌</a></div>
+            <div title="use"><a href="/use/?user={{username}}&card={{c.id}}">使用</a></div>
             {% endif %}
         </th>
         {% endfor %}
@@ -88,9 +137,10 @@
 {% endfor %}
 
 {% for playername, u in players.items %}
-<table  border="1">
+<table border="1">
     <!--其他人的卡片-->
     {% if u.name != username %}
+    <hr>
     <tr>
         <th colspan="5">{{u.nickname}}</th>
         {% if not gameend %}
@@ -102,33 +152,52 @@
         <th colspan="2"> 资源：{{u.ziyuan}}</th>
         <th colspan="2"> 紫色资源：{{u.zise_ziyuan}}</th>
         {% endif %}
+        <th>
+            <a href="/drop_ziyuan/?user={{username}}&player={{u.name}}"> 随机弃一个资源 </a><br>
+            <a href="/stole_ziyuan/?user={{username}}&player={{u.name}}&isdrop="> 随机抽他一个资源拿走 </a><br>
+            <a href="/stole_ziyuan/?user={{username}}&player={{u.name}}&isdrop=True"> 随机抽他一个资源扔掉 </a>
+        </th>
     </tr>
+</table>
+<table border="1">
     <tr>
         <th colspan="1" bgcolor="#E6E6FA"> 思考区：</th>
-        <th colspan="1" bgcolor="#E6E6FA">
-            {% if u.wupin_card_consider != none %}
-            <div title="name"> {{u.wupin_card_consider.name}} </div>
+        {% if u.wupin_card_consider != none %}
+        <th colspan="1" bgcolor="#E6E6FA" width="150px">
+            <div title="name"> {{u.wupin_card_consider.name}}</div>
             {% if gameend %}
             <div title="price"> 价格：{{u.wupin_card_consider.price}}资源 + {{u.wupin_card_consider.zise_price}}紫色资源</div>
-            <div title="point"> 分：{{u.wupin_card_consider.score}} </div>
-            <div title="desc"> 简介：{{u.wupin_card_consider.desc}} </div>
+            <div title="point"> 分：{{u.wupin_card_consider.score}}</div>
+            <div title="desc"> 简介：{{u.wupin_card_consider.desc}}</div>
+            <div title="get"><a
+                    href="/get_consider/?user={{username}}&player={{u.name}}&card={{u.wupin_card_consider.id}}">拿走</a>
+            </div>
             {% endif %}
-            <div title="drop"> <a href="/drop_consider/?user={{u.name}}&card={{u.wupin_card_consider.id}}">弃牌</a></div>
-            <div title="get"> <a href="/get_consider/?user={{u.name}}&card={{u.wupin_card_consider.id}}">拿走</a> </div>
-            {% endif %}
+            <!--user 从 player 拿走 card-->
+            <div title="drop"><a
+                    href="/drop_consider/?user={{username}}&player={{u.name}}&card={{u.wupin_card_consider.id}}">弃牌到市场</a>
+            </div>
+            <div title="drop1"><a
+                    href="/drop_consider/?user={{username}}&player={{u.name}}&card={{u.wupin_card_consider.id}}&tonone=True">弃牌消失</a>
+            </div>
+
         </th>
+        {% endif %}
+
         <th colspan="4"></th>
         <th colspan="1"> 横置区：</th>
         {% for ket, c in u.wupin_card.items %}
-        <th colspan="1" bgcolor="#A9A9A9">
-            {% if c.is_hengzhi %}
-            <div title="name"> {{c.name}} </div>
+        {% if c.is_hengzhi %}
+
+        <th colspan="1" bgcolor="#A9A9A9" width="150px">
+            <div title="name"> {{c.name}}</div>
             <div title="price"> 价格：{{c.price}}资源 + {{c.zise_price}}紫色资源</div>
-            <div title="point"> 分：{{c.score}} </div>
-            <div title="desc"> 简介：{{c.desc}} </div>
-            <div title="drop"> <a href="/drop/?user={{u.name}}&card={{c.id}}">弃牌</a></div>
-            {% endif %}
+            <div title="point"> 分：{{c.score}}</div>
+            <div title="desc"> 简介：{{c.desc}}</div>
+            <div title="drop"><a href="/drop/?user={{username}}&player={{u.name}}&card={{c.id}}">弃牌</a></div>
         </th>
+        {% endif %}
+
         {% endfor %}
     </tr>
     <tr>
@@ -136,15 +205,17 @@
             <br>手牌区<br><br>
         </th>
         {% for key, c in u.wupin_card.items %}
-        <th bgcolor="#ADFF2F">
+        <th bgcolor="#ADFF2F" width="150px">
             {% if not c.is_hengzhi %}
-            <div title="name"> {{c.name}} </div>
+            <div title="name"> {{c.name}}</div>
             {% if gameend %}
             <div title="price"> 价格：{{c.price}}资源 + {{c.zise_price}}紫色资源</div>
-            <div title="point"> 分：{{c.score}} </div>
-            <div title="desc"> 简介：{{c.desc}} </div>
+            <div title="point"> 分：{{c.score}}</div>
+            <div title="desc"> 简介：{{c.desc}}</div>
             {% endif %}
-            <div title="drop"> <a href="/drop/?player={{u.name}}&user={{username}}&card={{c.id}}">弃牌</a></div>
+            <div title="drop"><a href="/drop/?player={{u.name}}&user={{username}}&card={{c.id}}">弃牌</a></div>
+            <div title="get"><a href="/get_hand/?player={{u.name}}&user={{username}}&card={{c.id}}">拿走</a></div>
+
             <!--<div title="use"> <a href="/use/?user={{u.name}}&card={{c.id}}">使用</a></div>-->
             {% endif %}
         </th>
@@ -155,7 +226,7 @@
 {% endfor %}
 <br><br><br>
 
-<table  border="1">
+<table border="1">
     <!--市场-->
     <tr>
         市场
@@ -166,11 +237,11 @@
         </th>
         {% for key, c in markets.wupin_card.items %}
         <th bgcolor="#ADFF2F">
-            <div title="name"> {{c.name}} </div>
+            <div title="name"> {{c.name}}</div>
             <div title="price"> 价格：{{c.price}}资源 + {{c.zise_price}}紫色资源</div>
-            <div title="point"> 分：{{c.score}} </div>
-            <div title="desc"> 简介：{{c.desc}} </div>
-            <div title="buy"> <a href="/buy/?user={{username}}&card={{c.id}}">购买</a></div>
+            <div title="point"> 分：{{c.score}}</div>
+            <div title="desc"> 简介：{{c.desc}}</div>
+            <div title="buy"><a href="/buy/?user={{username}}&card={{c.id}}">购买</a></div>
         </th>
         {% endfor %}
     </tr>
@@ -182,10 +253,10 @@
 <div>
     <font>牌库：还有{{cardpiles.get_wupin_count}}张物品卡和{{cardpiles.get_total_ziyuan_count}}张资源卡</font>
     <!--<div>-->
-        <!--<a href="/get_wupin_card_pile/?user={{username}}">抽物品卡</a>-->
+    <!--<a href="/get_wupin_card_pile/?user={{username}}">抽物品卡</a>-->
     <!--</div>-->
     <!--<div>-->
-        <!--<a href="/get_ziyuan_card_pile/?user={{username}}">抽资源卡</a>-->
+    <!--<a href="/get_ziyuan_card_pile/?user={{username}}">抽资源卡</a>-->
     <!--</div>-->
 </div>
 
