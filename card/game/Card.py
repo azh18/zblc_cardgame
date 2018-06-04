@@ -31,6 +31,9 @@ def reduce_ziyuan(price, player, cardpile):
                 else:
                     raise Exception("error. no enough 1")
         else:
+            if player.ziyuan["1"] < need_reduced:
+                player.ziyuan["5"] -= 1
+                player.ziyuan["1"] += 5
             player.ziyuan["1"] -= need_reduced
             need_reduced = 0
     return
