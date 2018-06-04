@@ -119,8 +119,9 @@
             <br>手牌区<br><br>
         </th>
         {% for key, c in u.wupin_card.items %}
+        {% if not c.is_hengzhi %}
+
         <th bgcolor="#ADFF2F" width="150px">
-            {% if not c.is_hengzhi %}
             <div title="name"> {{c.name}}</div>
             <div title="price"> 价格：{{c.price}}资源 + {{c.zise_price}}紫色资源</div>
             <div title="desc"> 简介：{{c.desc}}</div>
@@ -128,8 +129,9 @@
             <!--user 从 player 拿走 card-->
             <div title="drop"><a href="/drop/?player={{u.name}}&user={{username}}&card={{c.id}}">弃牌</a></div>
             <div title="use"><a href="/use/?user={{username}}&card={{c.id}}">使用</a></div>
-            {% endif %}
         </th>
+        {% endif %}
+
         {% endfor %}
     </tr>
 </table>
@@ -205,8 +207,9 @@
             <br>手牌区<br><br>
         </th>
         {% for key, c in u.wupin_card.items %}
+        {% if not c.is_hengzhi %}
+
         <th bgcolor="#ADFF2F" width="150px">
-            {% if not c.is_hengzhi %}
             <div title="name"> {{c.name}}</div>
             {% if gameend %}
             <div title="price"> 价格：{{c.price}}资源 + {{c.zise_price}}紫色资源</div>
@@ -217,8 +220,9 @@
             <div title="get"><a href="/get_hand/?player={{u.name}}&user={{username}}&card={{c.id}}">拿走</a></div>
 
             <!--<div title="use"> <a href="/use/?user={{u.name}}&card={{c.id}}">使用</a></div>-->
-            {% endif %}
         </th>
+        {% endif %}
+
         {% endfor %}
     </tr>
     {% endif %}
