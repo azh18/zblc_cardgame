@@ -131,6 +131,8 @@ class CardPile:
             with open("game_info.csv") as f:
                 reader = csv.reader(f)
                 for row in reader:
+                    if len(row) < 1:
+                        continue
                     card_new = Card()
                     card_new.price = int(row[0].replace('\xef\xbb\xbf', ''))
                     card_new.zise_price = int(row[1].replace('\xef\xbb\xbf', ''))
